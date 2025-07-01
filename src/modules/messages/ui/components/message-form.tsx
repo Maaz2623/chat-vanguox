@@ -7,8 +7,8 @@ export const MessageForm = () => {
   return (
     <div className="border flex flex-col rounded-md px-3 pb-3 bg-sidebar">
       <TextAreaAutosize
-        minRows={3}
-        maxRows={5}
+        minRows={2}
+        maxRows={3}
         className="pt-4 resize-none border-none w-full outline-none bg-transparent"
         placeholder="What would you like to build?"
       />

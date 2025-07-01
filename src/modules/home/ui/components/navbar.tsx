@@ -15,15 +15,14 @@ export const Navbar = () => {
     }
 
     if (data?.session) {
-      return <UserButton />;
+      return <UserButton showName={true} />;
     }
 
     return (
       <div className="gap-x-2 flex">
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/auth">Sign up</Link>
+        <Button asChild size="sm">
+          <Link href="/auth">Sign in</Link>
         </Button>
-        <Button size="sm">Sign in</Button>
       </div>
     );
   };

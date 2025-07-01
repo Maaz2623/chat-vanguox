@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MessageForm } from "../components/message-form";
+import { MessageForm } from "../../../messages/ui/components/message-form";
 
 export const HomeView = () => {
   return (
