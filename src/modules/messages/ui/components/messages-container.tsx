@@ -25,7 +25,7 @@ export const MessagesContainer = () => {
       {/* Scrollable messages area */}
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto px-8 py-4 space-y-4 scrollbar-thin"
+        className="flex-1 overflow-y-auto px-18 py-4 space-y-4 scrollbar-thin"
       >
         {Array.from({ length: 12 }).map((_, i) => (
           <MessageCard key={i} roleType="USER" />
@@ -39,8 +39,9 @@ export const MessagesContainer = () => {
       <div className="sticky bottom-0 left-0 w-full bg-background px-6 py-4">
         {/* Optional gradient blur at the top */}
         <div className="absolute -top-4 left-0 w-full h-6 bg-gradient-to-t from-background to-transparent pointer-events-none" />
-
-        <MessageForm />
+        <div className="w-[90%] mx-auto">
+          <MessageForm />
+        </div>
       </div>
     </div>
   );

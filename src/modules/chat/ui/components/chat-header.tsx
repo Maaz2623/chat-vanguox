@@ -20,7 +20,7 @@ export const ChatHeader = ({ scrolled }: Props) => {
   return (
     <div
       className={cn(
-        "flex py-2 justify-between items-center px-8 border-gray-300 transition-all duration-200 sticky top-0 bg-background z-50",
+        "flex justify-between items-center px-4 h-14 border-gray-300 transition-all duration-200 sticky top-0 bg-background z-50",
         scrolled && "border-b"
       )}
     >

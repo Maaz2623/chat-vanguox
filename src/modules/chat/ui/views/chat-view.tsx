@@ -5,14 +5,17 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { ChatSidebar } from "../components/chat-sidebar";
 
 export const ChatView = () => {
   return (
     <div>
       <ResizablePanelGroup className="min-h-screen" direction="horizontal">
-        <ResizablePanel defaultSize={20}>One</ResizablePanel>
+        <ResizablePanel defaultSize={20}>
+          <ChatSidebar />
+        </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel className="flex flex-col">
+        <ResizablePanel defaultSize={80} className="flex flex-col">
           <MessagesContainer />
         </ResizablePanel>
       </ResizablePanelGroup>
