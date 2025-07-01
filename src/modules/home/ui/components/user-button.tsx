@@ -20,12 +20,12 @@ export const UserButton = () => {
             <Image
               src={data.user.image}
               alt="image"
-              width={30}
+              width={25}
               className="rounded-full"
-              height={30}
+              height={25}
             />
           )}
-          <span className="text-lg">{data?.user.name}</span>
+          <span className="text-md">{data?.user.name}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
