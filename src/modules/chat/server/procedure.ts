@@ -1,3 +1,4 @@
+import { inngest } from "@/inngest/client";
 import { prisma } from "@/lib/db";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
@@ -22,5 +23,32 @@ export const chatRouter = createTRPCRouter({
         }
 
         return chat
+    }),
+    create: protectedProcedure.input(z.object({
+        value: z.string()
+    })).mutation(async ({ctx, input}) => {
+        const createdChat = await prisma.chat.create({
+            data: {
+                userId: ctx.auth.user.id,
+                title: "Untitled",
+                messages: {
+                    create: {
+                        content: input.value,
+                        role: "USER",
+                        type: "RESULT"
+                    }
+                }
+            }
+        })
+
+        await inngest.send({
+            name: "vag/run",
+                data: {
+                    value: input.value,
+                    chatId: createdChat.id
+                }
+        })
+
+        return createdChat
     })
 })

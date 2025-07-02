@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { MessageCard } from "./message-card";
 import { MessageForm } from "./message-form";
 import { ChatHeader } from "@/modules/chat/ui/components/chat-header";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
 
 interface Props {
   chatId: string;
@@ -10,6 +12,19 @@ interface Props {
 export const MessagesContainer = ({ chatId }: Props) => {
   const [scrolled, setScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const trpc = useTRPC();
+
+  const { data: messages } = useSuspenseQuery(
+    trpc.messages.getMany.queryOptions(
+      {
+        chatId: chatId,
+      },
+      {
+        refetchInterval: 1000,
+      }
+    )
+  );
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -23,6 +38,13 @@ export const MessagesContainer = ({ chatId }: Props) => {
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView();
+  }, [messages.length]);
+
+  const lastMessage = messages[messages.length - 1];
+  const isLastMessageUser = lastMessage?.role === "USER";
+
   return (
     <div className="flex flex-col h-screen relative border">
       <ChatHeader chatId={chatId} scrolled={scrolled} />
@@ -31,12 +53,16 @@ export const MessagesContainer = ({ chatId }: Props) => {
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-18 py-4 space-y-4 scrollbar-thin"
       >
-        {Array.from({ length: 12 }).map((_, i) => (
-          <MessageCard key={i} roleType="USER" />
+        {messages.map((message, i) => (
+          <MessageCard
+            key={i}
+            roleType={message.role}
+            content={message.content}
+            isLatest={i === messages.length - 1}
+          />
         ))}
-        {Array.from({ length: 12 }).map((_, i) => (
-          <MessageCard key={i} roleType="ASSISTANT" />
-        ))}
+        {isLastMessageUser && <div>loading..</div>}
+        <div ref={bottomRef} />
       </div>
 
       {/* Sticky gradient + input area */}
@@ -44,7 +70,7 @@ export const MessagesContainer = ({ chatId }: Props) => {
         {/* Optional gradient blur at the top */}
         <div className="absolute -top-4 left-0 w-full h-6 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         <div className="w-[90%] mx-auto">
-          <MessageForm />
+          <MessageForm chatId={chatId} />
         </div>
       </div>
     </div>

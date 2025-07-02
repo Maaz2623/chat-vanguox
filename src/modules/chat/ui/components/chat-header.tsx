@@ -62,7 +62,7 @@ export const ChatHeader = ({ scrolled, chatId }: Props) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="w-[200px]">
+      <div className="w-[200px] text-center -ml-40">
         {!data ? (
           <Skeleton className="h-8 w-40 bg-gray-300 rounded-xs!" />
         ) : (

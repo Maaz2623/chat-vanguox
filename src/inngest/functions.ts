@@ -60,27 +60,27 @@ export const aiFunction = inngest.createFunction(
     }
 
 
-    step.run("save-results", async () => {
-     await step.run("save-results", async () => {
+    await step.run("save-results", async () => {
+    const response = generateResponse()
+    const title = chatTitle()
     const [message] = await prisma.$transaction([
       prisma.message.create({
         data: {
           chatId: event.data.chatId,
           role: "ASSISTANT",
           type: "RESULT",
-          content: generateResponse()
+          content: response
         }
       }),
       prisma.chat.update({
         where: { id: event.data.chatId },
         data: {
-          title: chatTitle()
+          title: title
         }
       })
     ]);
 
     return message
-  });
      
     })
 

@@ -2,17 +2,25 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import Image from "next/image";
+import Markdown from "react-markdown";
+import { TypewriterMarkdown } from "./typewriter-markdown";
 
 interface MessageCardProps {
   roleType: "USER" | "ASSISTANT";
+  content: string;
+  isLatest?: boolean; // 👈 optional flag
 }
 
-export const MessageCard = ({ roleType }: MessageCardProps) => {
+export const MessageCard = ({
+  roleType,
+  content,
+  isLatest,
+}: MessageCardProps) => {
   if (roleType === "ASSISTANT") {
-    return <AssistantMessage />;
+    return <AssistantMessage content={content} isLatest={isLatest} />;
   }
 
-  return <UserMessage content="User Message" />;
+  return <UserMessage content={content} />;
 };
 
 interface UserMessageProps {
@@ -29,16 +37,16 @@ const UserMessage = ({ content }: UserMessageProps) => {
   );
 };
 
-const AssistantMessage = () => {
+interface AssistantMessageProps {
+  content: string;
+  isLatest?: boolean;
+}
+
+const AssistantMessage = ({ content, isLatest }: AssistantMessageProps) => {
   const createdAt = Date.now();
 
   return (
-    <div
-      className={cn(
-        "flex flex-col group px-2 pb-4"
-        // type === "ERROR" && "text-red-700 dark:text-red-500"
-      )}
-    >
+    <div className={cn("flex flex-col group px-2 pb-4")}>
       <div className="flex items-center gap-2 pl-2 mb-2">
         <Image
           src={`/logo.svg`}
@@ -52,8 +60,12 @@ const AssistantMessage = () => {
           {format(createdAt, "HH:mm 'on' MM dd, yyyy")}
         </span>
       </div>
-      <div className="pl-8 5 flex flex-col gap-y-4 ">
-        <span>This is AI</span>
+      <div className="pl-8 flex flex-col gap-y-4">
+        {isLatest ? (
+          <TypewriterMarkdown text={content} />
+        ) : (
+          <Markdown>{content}</Markdown>
+        )}
       </div>
     </div>
   );
