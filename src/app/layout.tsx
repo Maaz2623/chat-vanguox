@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Oxanium } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import { TRPCReactProvider } from "@/trpc/client";
 
 const oxanium = Oxanium({
   subsets: ["latin"],
@@ -21,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${oxanium.className} antialiased`}>
-        {children} <Toaster />
+        <TRPCReactProvider>
+          {children} <Toaster />
+        </TRPCReactProvider>
       </body>
     </html>
   );

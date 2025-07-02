@@ -3,7 +3,11 @@ import { MessageCard } from "./message-card";
 import { MessageForm } from "./message-form";
 import { ChatHeader } from "@/modules/chat/ui/components/chat-header";
 
-export const MessagesContainer = () => {
+interface Props {
+  chatId: string;
+}
+
+export const MessagesContainer = ({ chatId }: Props) => {
   const [scrolled, setScrolled] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -21,7 +25,7 @@ export const MessagesContainer = () => {
 
   return (
     <div className="flex flex-col h-screen relative border">
-      <ChatHeader scrolled={scrolled} />
+      <ChatHeader chatId={chatId} scrolled={scrolled} />
       {/* Scrollable messages area */}
       <div
         ref={scrollRef}
