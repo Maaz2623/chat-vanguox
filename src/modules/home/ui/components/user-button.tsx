@@ -11,16 +11,25 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LogOutIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface Props {
   showName: boolean;
 }
 
 export const UserButton = ({ showName }: Props) => {
+  const router = useRouter();
+
   const { data } = authClient.useSession();
 
   const signOut = async () => {
-    await authClient.signOut({});
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push(`/`);
+        },
+      },
+    });
   };
 
   return (
